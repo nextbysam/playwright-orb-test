@@ -1,11 +1,13 @@
 const http = require("http");
 
+// Playwright browsers were installed to /opt/browsers during build
+process.env.PLAYWRIGHT_BROWSERS_PATH = "/opt/browsers";
+
 const server = http.createServer((req, res) => {
   res.setHeader("Content-Type", "application/json");
   if (req.url === "/health") {
     res.end(JSON.stringify({ status: "ok", pid: process.pid }));
   } else if (req.url === "/launch-chrome") {
-    // Try launching Chrome on demand instead of at startup
     const { chromium } = require("playwright");
     chromium.launch({
       headless: true,
